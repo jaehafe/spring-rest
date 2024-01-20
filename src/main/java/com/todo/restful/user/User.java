@@ -1,12 +1,15 @@
 package com.todo.restful.user;
 
+import com.todo.restful.post.Post;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
+import java.util.List;
 
 
 @Entity(name = "user_details")
@@ -26,6 +29,9 @@ public class User {
 
     @Past(message = "Birth Date should be in the past")
     private LocalDate birthDate;
+
+    @OneToMany(mappedBy = "user")
+    private List<Post> posts;
 
     public User(Integer id, String name, LocalDate birthDate) {
         this.id = id;
