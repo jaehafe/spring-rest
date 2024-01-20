@@ -1,6 +1,7 @@
 package com.todo.restful.user;
 
 import com.todo.restful.jpa.UserRepository;
+import com.todo.restful.post.Post;
 import jakarta.validation.Valid;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
@@ -61,5 +62,16 @@ public class UserJpaResource {
     @DeleteMapping("/jpa/users/{id}")
     public void deleteUser(@PathVariable int id) {
         repository.deleteById(id);
+    }
+
+    @GetMapping("/jpa/users/{id}/posts")
+    public List<Post> retrievePostsForUser(@PathVariable int id) {
+        Optional<User> user = repository.findById(id);
+
+        if (user.isEmpty()) {
+            throw new UserNotFoundException("id:" + id);
+        }
+
+        return user.get().getPosts();
     }
 }
